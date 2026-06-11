@@ -1,0 +1,11 @@
+services:
+  postgres-db:
+    image: 'postgres:16'
+    container_name: 'postgres-db'
+    environment:
+      - 'POSTGRES_DB=curr_exchange'
+      - 'POSTGRES_PASSWORD=pass'
+      - 'POSTGRES_USER=user'
+      - 'TZ=Europe/Moscow'
+    ports:
+      - '5433:5432'

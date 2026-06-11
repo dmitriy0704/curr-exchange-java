@@ -19,12 +19,13 @@ repositories {
 }
 
 dependencies {
-//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("jakarta.validation:jakarta.validation-api:3.1.0")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-//    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testCompileOnly("org.projectlombok:lombok")

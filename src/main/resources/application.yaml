@@ -1,3 +1,20 @@
 spring:
   application:
     name: curr-exchange-java
+  datasource:
+    url: jdbc:postgresql://localhost:5433/curr_exchange?serverTimezone=Europe/Moscow
+    driver-class-name: org.postgresql.Driver
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+      jdbc:
+        time_zone: Europe/Moscow
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+server:
+  port: 8090
