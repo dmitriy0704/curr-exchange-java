@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +35,7 @@ public class CurrServiceImpl implements CurrService {
 
     //-> Загрузить список валют в БД
     @Transactional
+    @Override
     public List<CurrEntity> externalRequest() {
         CbrResponse response = restTemplate.getForObject(
                 EXTERNAL_URL, CbrResponse.class
@@ -47,11 +48,20 @@ public class CurrServiceImpl implements CurrService {
             for (CharCode c : CharCode.values()) {
                 CurrEntity curr = rates.get(c.toString());
                 if (curr != null) {
-                    System.out.println(
-                            "Курс " + curr.getName() + ": " +
-                                    curr.getValue() + " руб."
+                    //-> При каждом новом запросе не дописываем валюты,
+                    // а обновляем, если такие есть в БД
+                    currRepo.findByCharCode(c.name()).ifPresent(
+                            existingCurr -> {
+                                curr.setId(existingCurr.getId());
+                            }
                     );
-                    curr.setLastUpdated(OffsetDateTime.parse(response.timestamp()));
+
+
+                    LocalDateTime ldt = LocalDateTime
+                            .parse(response.timestamp(),
+                                    DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
+                    curr.setResponseTimestamp(ldt);
                     valuteList.add(curr);
                     currRepo.save(curr);
                 }
@@ -61,6 +71,7 @@ public class CurrServiceImpl implements CurrService {
     }
 
 
+    @Override
     public String convert(Money money) {
         CurrEntity curr = currRepo.findByCharCode(money.charCode().toUpperCase())
                 .orElseThrow(() -> new IllegalArgumentException(
