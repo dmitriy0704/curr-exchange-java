@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CurrService {
 
-    String convert(Money money);
+    BigDecimal convert(Money money);
 }

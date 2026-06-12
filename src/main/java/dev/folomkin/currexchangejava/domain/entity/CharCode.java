@@ -3,7 +3,7 @@ package dev.folomkin.currexchangejava.domain.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum CharCode {
-    GBP, USD, EUR;
+    DZD, GBP, USD, EUR;
 
     @JsonCreator
     public static CharCode fromString(String value) {

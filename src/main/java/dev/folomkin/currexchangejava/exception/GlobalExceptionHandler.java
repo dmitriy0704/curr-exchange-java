@@ -21,14 +21,13 @@ public class GlobalExceptionHandler {
         if (ex.getMessage() != null && ex.getMessage().contains("CharCode")) {
             String allowedCurrencies = Arrays.toString(CharCode.values());
             message = "Указан неверный код валюты. Доступные варианты: " + allowedCurrencies;
-        //-> Количество
+            //-> Количество
         } else if (ex.getMessage() != null && ex.getMessage().contains("Unrecognized token")) {
             message = "Поле amount должно быть числом.";
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
-
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handlePositiveMoney(IllegalArgumentException ex) {

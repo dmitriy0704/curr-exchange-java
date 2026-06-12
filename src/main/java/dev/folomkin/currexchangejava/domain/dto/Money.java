@@ -3,6 +3,7 @@ package dev.folomkin.currexchangejava.domain.dto;
 import dev.folomkin.currexchangejava.domain.entity.CharCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
@@ -16,7 +17,10 @@ public record Money(
         @NotNull(message = "Код валюты обязателен")
         CharCode charCode,
 
+
+//        @Positive(message = "Сумма должна быть строго больше нуля")
         @Schema(description = "Сумма перевода")
         @NotNull(message = "Сумма обязательна")
         BigDecimal amount) {
+
 }

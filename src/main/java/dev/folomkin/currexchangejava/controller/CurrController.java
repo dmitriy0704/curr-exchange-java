@@ -7,8 +7,10 @@ import dev.folomkin.currexchangejava.integrations.Integration;
 import dev.folomkin.currexchangejava.service.CurrService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -38,7 +40,7 @@ public class CurrController {
             description = "Необходимо указать код валюты и количество единиц валюты"
     )
     @PostMapping("/convert")
-    public String convert(@RequestBody Money money) {
+    public BigDecimal convert(@Valid @RequestBody Money money) {
         return currService.convert(money);
     }
 }
