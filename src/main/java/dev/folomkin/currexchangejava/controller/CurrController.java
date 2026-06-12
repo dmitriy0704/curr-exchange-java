@@ -3,12 +3,12 @@ package dev.folomkin.currexchangejava.controller;
 
 import dev.folomkin.currexchangejava.domain.dto.Money;
 import dev.folomkin.currexchangejava.domain.entity.CurrEntity;
+import dev.folomkin.currexchangejava.integrations.Integration;
 import dev.folomkin.currexchangejava.service.CurrService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -17,25 +17,20 @@ import java.util.List;
 public class CurrController {
 
     private final CurrService currService;
+    private final Integration integration;
 
-    public CurrController(CurrService currService) {
+    public CurrController(CurrService currService,
+                          Integration integration) {
         this.currService = currService;
+        this.integration = integration;
     }
-
-//    @GetMapping("/ping")
-//    public String ping() {
-//        return "pong";
-//    }
 
 
     @Operation(summary = "Получение списка валют от ЦБ")
-    @GetMapping("/get-valute-list")
+    @GetMapping("/get-valutes")
     public List<CurrEntity> externalRequest() {
-        return currService.externalRequest();
+        return integration.externalRequest();
     }
-
-
-
 
 
     @Operation(

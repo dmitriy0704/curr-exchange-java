@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface CurrService {
 
-    List<CurrEntity> externalRequest();
-
     String convert(Money money);
 }

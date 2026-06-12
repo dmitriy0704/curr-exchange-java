@@ -14,7 +14,7 @@ public record Money(
         @Schema(description = "Код валюты")
         @Size(min = 3, max = 3, message = "Код валюты должен состоять из 3 символов")
         @NotNull(message = "Код валюты обязателен")
-        String charCode,
+        CharCode charCode,
 
         @Schema(description = "Сумма перевода")
         @NotNull(message = "Сумма обязательна")

@@ -9,6 +9,4 @@ public interface CurrRepo extends JpaRepository<CurrEntity, Long> {
 
     Optional<CurrEntity> findByCharCode(String charCode);
 
-    // Возвращает true, если в таблице есть хотя бы одна запись
-    boolean existsBy();
 }
