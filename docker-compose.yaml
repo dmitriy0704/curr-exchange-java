@@ -1,11 +1,28 @@
 services:
-  postgres-db:
-    image: 'postgres:16'
-    container_name: 'postgres-db'
-    environment:
-      - 'POSTGRES_DB=curr_exchange'
-      - 'POSTGRES_PASSWORD=pass'
-      - 'POSTGRES_USER=user'
-      - 'TZ=Europe/Moscow'
+  app:
+    image: curr_exchange_back:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '5433:5432'
+      - "8090:8090"
+    depends_on:
+      - app_db
+    environment:
+      - SERVER_PORT=8090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://app_db/curr_exchange
+
+  app_db:
+    image: postgres:16
+    container_name: app_db
+    environment:
+      - POSTGRES_DB=curr_exchange
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=user
+      - TZ=Europe/Moscow
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+volumes:
+  pg_data:

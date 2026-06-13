@@ -26,6 +26,7 @@ class CurrServiceImplTest {
     @InjectMocks
     CurrServiceImpl currServiceImpl;
 
+    //-> Тестируем конвертацию с валидными полями
     @Test
     void shouldReturnCorrectAmount() {
         Money money = new Money(CharCode.EUR, BigDecimal.valueOf(2));
@@ -38,7 +39,7 @@ class CurrServiceImplTest {
         assertThat(amount).isEqualTo(BigDecimal.valueOf(165.94));
     }
 
-    //-> Тестируем ситуацию, когда сумма перевода меньше либо равна 0
+    //-> Тестируем конвертацию, когда сумма перевода меньше либо равна 0
     @Test
     void shouldReturnThrowException_WhenAmountIsZero() {
         Money money = new Money(CharCode.EUR, BigDecimal.valueOf(0));
@@ -49,7 +50,7 @@ class CurrServiceImplTest {
     }
 
 
-    //-> Тестируем ситуацию когда номинал валюты больше 1
+    //-> Тестируем конвертацию, когда номинал валюты больше 1
     @Test
     void shouldCalculateCorrectly_WhenNominalIsGreaterThanOne() {
         //-> 100 Алжирских динаров = 53.93 р.
