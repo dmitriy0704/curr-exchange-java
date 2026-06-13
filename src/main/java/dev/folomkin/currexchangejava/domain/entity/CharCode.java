@@ -5,13 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public enum CharCode {
     DZD, GBP, USD, EUR;
 
+    //-> Этот код добавляет возможность вводить код валюты в нижнем регистре.
     @JsonCreator
     public static CharCode fromString(String value) {
-        try {
-            return CharCode.valueOf(value.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            // Возвращаем null, чтобы сработал наш обработчик HttpMessageNotReadableException
-            return null;
-        }
+        return CharCode.valueOf(value.toUpperCase());
     }
 }

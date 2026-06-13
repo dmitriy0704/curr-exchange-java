@@ -3,6 +3,7 @@ spring:
     name: curr-exchange-java
   datasource:
     url: jdbc:postgresql://app_db:5433/curr_exchange?serverTimezone=Europe/Moscow
+#    url: jdbc:postgresql://localhost:5433/curr_exchange?serverTimezone=Europe/Moscow
     driver-class-name: org.postgresql.Driver
     username: user
     password: pass
@@ -11,7 +12,7 @@ spring:
       ddl-auto: update
       jdbc:
         time_zone: Europe/Moscow
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
