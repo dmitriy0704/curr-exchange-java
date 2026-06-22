@@ -2,8 +2,8 @@ spring:
   application:
     name: curr-exchange-java
   datasource:
-    url: jdbc:postgresql://app_db:5433/curr_exchange?serverTimezone=Europe/Moscow
-#    url: jdbc:postgresql://localhost:5433/curr_exchange?serverTimezone=Europe/Moscow
+#    url: jdbc:postgresql://app_db:5433/curr_exchange?serverTimezone=Europe/Moscow
+    url: jdbc:postgresql://localhost:5433/curr_exchange?serverTimezone=Europe/Moscow
     driver-class-name: org.postgresql.Driver
     username: user
     password: pass

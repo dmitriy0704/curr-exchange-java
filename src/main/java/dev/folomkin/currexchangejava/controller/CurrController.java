@@ -30,8 +30,8 @@ public class CurrController {
 
     @Operation(summary = "Получение списка валют от ЦБ")
     @GetMapping("/get-valutes")
-    public List<CurrEntity> externalRequest() {
-        return integration.externalRequest();
+    public List<CurrEntity> saveValute() {
+        return currService.saveValute();
     }
 
 

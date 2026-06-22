@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CurrService {
 
+
+    List<CurrEntity> saveValute();
     BigDecimal convert(Money money);
 }

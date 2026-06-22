@@ -14,7 +14,9 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -29,28 +31,59 @@ class CurrServiceImplTest {
     //-> Тестируем конвертацию с валидными полями
     @Test
     void shouldReturnCorrectAmount() {
-        Money money = new Money(CharCode.EUR, BigDecimal.valueOf(2));
+        Money validMoney = new Money(CharCode.EUR, BigDecimal.valueOf(2));
         CurrEntity currEntity = new CurrEntity();
-        currEntity.setCharCode("EUR");
         currEntity.setValue(BigDecimal.valueOf(82.97));
         currEntity.setNominal(1);
         when(currRepo.findByCharCode("EUR")).thenReturn(Optional.of(currEntity));
-        BigDecimal amount = currServiceImpl.convert(money);
-        assertThat(amount).isEqualTo(BigDecimal.valueOf(165.94));
+        BigDecimal res = currServiceImpl.convert(validMoney);
+        assertThat(res).isEqualTo(BigDecimal.valueOf(165.94));
     }
 
-    //-> Тестируем конвертацию, когда сумма перевода меньше либо равна 0
+
+    //-> null вместо объекта Money
+    @Test
+    void convert_WhenMoneyIsNull_ShouldThrowException() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> currServiceImpl.convert(null) // Передаем null
+        );
+        assertEquals("Объект Money не может быть null", exception.getMessage());
+        //-> до базы данных код не дошел
+        verifyNoInteractions(currRepo);
+    }
+
+
+    //-> код валюты равен null
+    @Test
+    void convert_WhenCharCodeIsNull_ShouldThrowException() {
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> currServiceImpl.convert(new Money(null, BigDecimal.valueOf(100))) // Передаем null
+        );
+
+        assertEquals("Код валюты не может быть пустым", exception.getMessage());
+        verifyNoInteractions(currRepo);
+    }
+
+
+    //-> сумма перевода меньше либо равна 0
     @Test
     void shouldReturnThrowException_WhenAmountIsZero() {
-        Money money = new Money(CharCode.EUR, BigDecimal.valueOf(0));
+        Money invalidMoney = new Money(CharCode.EUR, BigDecimal.ZERO);
 
-        assertThatThrownBy(() -> currServiceImpl.convert(money))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Сумма перевода должна быть больше нуля");
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> currServiceImpl.convert(invalidMoney)
+        );
+
+        assertEquals("Сумма должна быть больше или равна нулю", exception.getMessage());
+        verifyNoInteractions(currRepo);
     }
 
 
-    //-> Тестируем конвертацию, когда номинал валюты больше 1
+    //-> номинал валюты больше 1
     @Test
     void shouldCalculateCorrectly_WhenNominalIsGreaterThanOne() {
         //-> 100 Алжирских динаров = 53.93 р.

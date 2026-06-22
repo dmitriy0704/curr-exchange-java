@@ -32,7 +32,6 @@ public class Integration {
 
 
     //-> Загрузить список валют в БД
-    @Transactional
     public List<CurrEntity> externalRequest() {
         CbrResponse response = restTemplate.getForObject(
                 EXTERNAL_URL, CbrResponse.class
@@ -40,27 +39,19 @@ public class Integration {
         List<CurrEntity> valuteList = new ArrayList<>();
         if (response != null && response.valute() != null) {
             //-> Из ответа получаем список валют
+
             Map<String, CurrEntity> rates = response.valute();
             //-> Получаем только те валюты, CharCode которых указан в enum
+
             for (CharCode c : CharCode.values()) {
                 CurrEntity curr = rates.get(c.toString());
                 if (curr != null) {
-                    //-> При каждом новом запросе не дописываем валюты,
-                    // а обновляем, если такие есть в БД
-                    currRepo.findByCharCode(c.name()).ifPresent(
-                            existingCurr -> {
-                                curr.setId(existingCurr.getId());
-                            }
-                    );
-
-
                     LocalDateTime ldt = LocalDateTime
                             .parse(response.timestamp(),
                                     DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 
                     curr.setResponseTimestamp(ldt);
                     valuteList.add(curr);
-                    currRepo.save(curr);
                 }
             }
         }
@@ -68,4 +59,8 @@ public class Integration {
     }
 
 
+    @Transactional
+    void save(CurrEntity curr) {
+        currRepo.save(curr);
+    }
 }
