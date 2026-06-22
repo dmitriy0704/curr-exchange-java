@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-class CurrServiceImplTest {
+class CurrServiceTest {
 
     @Mock
     CurrRepo currRepo;
