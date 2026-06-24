@@ -80,6 +80,3 @@ public class CurrServiceImpl implements CurrService {
 //TODO: Разделить на части, чтобы можно было написать юнит тесты только на математику
 //TODO: Написать интеграционный тест
 
-// agent loop
-// ollama, openCode, MCP(протокол от antropic)
-// spring ai
