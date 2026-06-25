@@ -19,22 +19,17 @@ import java.util.List;
 public class CurrController {
 
     private final CurrService currService;
-    private final Integration integration;
 
-    public CurrController(CurrService currService,
-                          Integration integration) {
+    public CurrController(CurrService currService) {
         this.currService = currService;
-        this.integration = integration;
     }
-
 
     @Operation(summary = "Получение списка валют от ЦБ")
     @GetMapping("/get-valutes")
     public List<CurrEntity> saveValute() {
         return currService.saveValute();
     }
-
-
+    
     @Operation(
             summary = "Конвертация валют",
             description = "Необходимо указать код валюты и количество единиц валюты"

@@ -18,12 +18,10 @@ import java.util.Map;
 public class Integration {
 
     private final RestTemplate restTemplate;
-    private final CurrRepo currRepo;
 
 
-    public Integration(RestTemplate restTemplate, CurrRepo currRepo) {
+    public Integration(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.currRepo = currRepo;
     }
 
 
@@ -59,8 +57,5 @@ public class Integration {
     }
 
 
-    @Transactional
-    void save(CurrEntity curr) {
-        currRepo.save(curr);
-    }
+
 }
